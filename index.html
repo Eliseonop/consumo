@@ -1,10 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Consumo de datos — Tcontur</title>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-$END$
+<header>
+  <h1>Consumo de datos <span>Tcontur</span></h1>
+  <p class="muted">Sube uno o varios <code>LOG_*.txt</code> y calcula cuántos datos consumió la app.</p>
+</header>
+
+<label id="drop" for="file">
+  <input type="file" id="file" accept=".txt,text/plain" multiple hidden>
+  <div class="drop-inner">
+    <div class="drop-icon">⬆</div>
+    <b>Arrastra tus logs aquí</b>
+    <span class="muted">o haz clic para elegir · se procesan en tu navegador, nada se sube a internet</span>
+  </div>
+</label>
+
+<div id="status" class="muted"></div>
+
+<div id="toolbar">
+  <button id="btnJson" class="btn-ghost">＋ Agregar objeto JSON</button>
+  <span id="jsonResumen" class="muted"></span>
+</div>
+
+<section id="cmp" hidden>
+  <label for="sesiones" class="muted">Pega las sesiones de la plataforma para repartir los boletos: una <b>fila por línea</b> (con Inicio y Fin) o el <b>objeto JSON</b> de la sesión (un objeto o un arreglo <code>[ ... ]</code>). El JSON además se muestra como sesión estructurada con sus controles.</label>
+  <textarea id="sesiones" rows="4"
+    placeholder='1493  A  2026-08-28 05:04:50  2026-08-28 08:11:41  129.00  VENTOSILLA...&#10;— o pega un objeto —&#10;{ "id": 33461, "lado": true, "inicio": "2026-09-01T11:15:51", "fin": "2026-09-01T11:20:21", "produccion": 212, "conductor": {...}, "salida": {...} }'></textarea>
+  <button id="comparar">Comparar / cargar sesiones</button>
+</section>
+
+<nav id="jump" class="jump" hidden></nav>
+<main id="report" hidden></main>
+
+<div id="jsonModal" class="modal" hidden>
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>Agregar sesiones (JSON)</h3>
+      <button id="jsonClose" class="modal-x" aria-label="Cerrar" title="Cerrar">×</button>
+    </div>
+    <p class="muted">Pega el objeto JSON de una sesión. Puedes pegar <b>una</b>, un arreglo <code>[ … ]</code>, o <b>varios</b> objetos seguidos. Pulsa <b>Añadir</b> para apilar y seguir pegando más; <b>Confirmar</b> las procesa todas.</p>
+    <textarea id="jsonInput" rows="9" placeholder='{ "id": 33461, "lado": true, "inicio": "2026-09-01T11:15:51", "fin": "2026-09-01T11:20:21", "produccion": 212, "conductor": {...}, "salida": {...} }'></textarea>
+    <div id="jsonMsg" class="modal-msg"></div>
+    <div class="modal-row">
+      <button id="jsonAdd" class="btn-ghost">➕ Añadir a la lista</button>
+      <span id="jsonCount" class="muted">lista vacía</span>
+    </div>
+    <div id="jsonChips" class="chips"></div>
+    <div class="modal-foot">
+      <button id="jsonCancel" class="btn-ghost">Cancelar</button>
+      <button id="jsonConfirm">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
 </body>
 </html>
